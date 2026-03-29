@@ -65,6 +65,7 @@ if st.button("🔍 エビデンス抽出実行"):
                 for ego, categories in res_data["analysis"].items():
                     for cat_type, details in categories.items():
                         rows.append({
+                            "分析対象文章": input_text,
                             "自我状態": ego,
                             "タイプ": "P (光)" if cat_type == "P" else "M (影)" if cat_type == "M" else "Z (無)",
                             "スコア": details["score"],
