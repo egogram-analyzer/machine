@@ -75,9 +75,10 @@ if st.button("🔍 エビデンス抽出実行"):
                 df = pd.DataFrame(rows)
                 st.table(df) # 画面表示は元のままの項目
                 
-                # CSV出力用には「分析対象文章」を先頭に追加
+                # CSV出力用：最後に質問文の行を追加
                 df_csv = df.copy()
-                df_csv.insert(0, "分析対象文章", input_text)
+                input_row = pd.DataFrame([{"自我状態": "分析対象文章", "タイプ": input_text, "スコア": "", "採用された単語・フレーズ": "", "判定の論理的根拠": ""}])
+                df_csv = pd.concat([df_csv, input_row], ignore_index=True)
                 
                 # CSVダウンロード機能（エビデンス蓄積用）
                 csv = df_csv.to_csv(index=False).encode('utf-8-sig')
