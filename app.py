@@ -65,7 +65,6 @@ if st.button("🔍 エビデンス抽出実行"):
                 for ego, categories in res_data["analysis"].items():
                     for cat_type, details in categories.items():
                         rows.append({
-                            "分析対象文章": input_text,
                             "自我状態": ego,
                             "タイプ": "P (光)" if cat_type == "P" else "M (影)" if cat_type == "M" else "Z (無)",
                             "スコア": details["score"],
@@ -74,10 +73,14 @@ if st.button("🔍 エビデンス抽出実行"):
                         })
                 
                 df = pd.DataFrame(rows)
-                st.table(df) # 読みやすさ重視でテーブル表示
+                st.table(df) # 画面表示は元のままの項目
+                
+                # CSV出力用には「分析対象文章」を先頭に追加
+                df_csv = df.copy()
+                df_csv.insert(0, "分析対象文章", input_text)
                 
                 # CSVダウンロード機能（エビデンス蓄積用）
-                csv = df.to_csv(index=False).encode('utf-8-sig')
+                csv = df_csv.to_csv(index=False).encode('utf-8-sig')
                 st.download_button(
                     label="📥 結果をCSVとしてダウンロード",
                     data=csv,
